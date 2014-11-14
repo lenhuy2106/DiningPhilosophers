@@ -19,7 +19,7 @@ public class Table {
     Fork[] forks;
     Semaphore seatSem;
 
-    Table(int nSeats, int nPhilosophers) {
+    Table(int nSeats, int nPhilosophers, int mostHungry) {
 
         seats = new Seat[nSeats];
         forks = new Fork[nSeats];
@@ -31,7 +31,11 @@ public class Table {
         }
 
         for (int i = 0; i < nPhilosophers; i++) {
-            new Philosopher("id " + i, 1000, this).start();
+            if (i != mostHungry) {
+                new Philosopher("id " + i, 1000, this).start();
+            } else {
+                new Philosopher("id " + i, 0, this).start();
+            }
         }
     }
 
@@ -39,7 +43,8 @@ public class Table {
 
         int nPhilosophers = 5;
         int nSeats = 5;
+        int mostHungry = 3;
 
-        Table table = new Table(nSeats, nPhilosophers);
+        Table table = new Table(nSeats, nPhilosophers, mostHungry);
     }
 }

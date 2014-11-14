@@ -24,7 +24,6 @@ class Fork {
             free = false;
             success = true;
         }
-
         return success;
     }
 

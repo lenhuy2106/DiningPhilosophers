@@ -23,7 +23,6 @@ class Seat {
             free = false;
             success = true;
         }
-
         return success;
     }
 
