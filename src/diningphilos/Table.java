@@ -50,7 +50,7 @@ public class Table {
 
         System.out.println("table opens.");
         Table table = new Table(nSeats, nPhilosophers, mostHungry);
-        Thread.sleep(1000);
+        Thread.sleep(60000);
 
         System.out.println("table closes.");
         // stop all
