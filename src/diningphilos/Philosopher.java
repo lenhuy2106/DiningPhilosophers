@@ -78,6 +78,8 @@ public class Philosopher extends Thread {
 
     public void run() {
 
+        int meals = 0;
+
         while(true) {
             try {
                 System.out.println(name + " meditates.");
@@ -85,6 +87,12 @@ public class Philosopher extends Thread {
                 System.out.printf("%-15s %s %n", name, "gets hungry.");
                 eat();
                 System.out.printf("%-75s %s %n", name, "leaves.");
+
+                if (++meals == 3) {
+                    System.out.printf("%-90s %s %n", name, "sleeps.");
+                    Thread.sleep(5000);
+                    meals = 0;
+                }
 
             } catch (InterruptedException ex) {}
         }
