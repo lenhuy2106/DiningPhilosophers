@@ -12,7 +12,6 @@ package diningphilos;
  * @author T500
  */
 class Fork {
-
     Philosopher holder;
     boolean free = true;
 

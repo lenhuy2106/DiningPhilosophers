@@ -7,8 +7,6 @@
 
 package diningphilos;
 
-import java.util.concurrent.Semaphore;
-
 /**
  *
  * @author T500
@@ -17,13 +15,17 @@ public class Table {
 
     Seat[] seats;
     Fork[] forks;
-    Semaphore seatSem;
+    Master master;
 
     Table(int nSeats, int nPhilosophers, int mostHungry) {
 
         seats = new Seat[nSeats];
         forks = new Fork[nSeats];
-        seatSem = new Semaphore(nSeats);
+
+        // master feature
+        master = new Master(nPhilosophers);
+        master.start();
+        System.out.println("master enters room.");
 
         for (int i = 0; i < nSeats; i++) {
             seats[i] = new Seat();
@@ -32,19 +34,30 @@ public class Table {
 
         for (int i = 0; i < nPhilosophers; i++) {
             if (i != mostHungry) {
-                new Philosopher("id " + i, 1000, this).start();
+                master.philosophers[i] = new Philosopher("id " + i, this);
             } else {
-                new Philosopher("id " + i, 0, this).start();
+                master.philosophers[i] = new Philosopher("id " + i, this);
             }
+            master.philosophers[i].start();
         }
     }
 
-    public static void main(String[]args) {
+    public static void main(String[]args) throws InterruptedException {
 
         int nPhilosophers = 5;
         int nSeats = 5;
         int mostHungry = 3;
 
+        System.out.println("table opens.");
         Table table = new Table(nSeats, nPhilosophers, mostHungry);
+        Thread.sleep(1000);
+
+        System.out.println("table closes.");
+        // stop all
+        for (Philosopher cur : table.master.philosophers) {
+            cur.interrupt();
+        }
+
+        table.master.interrupt();
     }
 }

@@ -13,14 +13,16 @@ package diningphilos;
  */
 public class Philosopher extends Thread {
 
-    int msMeditate;
     String name;
     Table table;
+    int meals;
+    boolean banned;
 
-    public Philosopher(String name, int msMeditate, Table table) {
-        this.msMeditate = msMeditate;
+    public Philosopher(String name, Table table) {
         this.name = name;
         this.table = table;
+        meals = 0;
+        banned = false;
     }
 
     public void eat() throws InterruptedException {
@@ -69,33 +71,40 @@ public class Philosopher extends Thread {
         }
 
         System.out.printf("%-60s %s %d.%n", name, "eats at", i);
-        Thread.sleep(3000);
+        Thread.sleep(1);
 
         second.drop();
         first.drop();
         seat.leave();
+        meals++;
     }
 
     public void run() {
 
-        int meals = 0;
+        int mealsLeft = 3;
 
-        while(true) {
-            try {
+        try {
+            while (!isInterrupted()) {
                 System.out.println(name + " meditates.");
-                Thread.sleep(msMeditate);
+                Thread.sleep(5);
                 System.out.printf("%-15s %s %n", name, "gets hungry.");
                 eat();
                 System.out.printf("%-75s %s %n", name, "leaves.");
 
-                if (++meals == 3) {
+                if (--mealsLeft == 0) {
                     System.out.printf("%-90s %s %n", name, "sleeps.");
+                    Thread.sleep(10);
+                    mealsLeft = 3;
+                } else if (banned == true) {
+                    System.out.printf("%-90s %s %n", name, "banned.");
                     Thread.sleep(5000);
-                    meals = 0;
+                    banned = false;
                 }
-
-            } catch (InterruptedException ex) {}
+            }
+        } catch (InterruptedException ex) {
+            System.out.println(name + " starves to death. :(");
         }
     }
-
 }
+
+
