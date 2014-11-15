@@ -17,10 +17,13 @@ public class Philosopher extends Thread {
     Table table;
     int meals;
     boolean banned;
+    boolean hungry;
 
-    public Philosopher(String name, Table table) {
+
+    public Philosopher(String name, Table table, boolean hungry) {
         this.name = name;
         this.table = table;
+        this.hungry = hungry;
         meals = 0;
         banned = false;
     }
@@ -82,10 +85,14 @@ public class Philosopher extends Thread {
     public void run() {
 
         int mealsLeft = 3;
+        if (hungry) {
+            setPriority(Thread.MAX_PRIORITY);
+        }
 
         try {
             while (!isInterrupted()) {
                 System.out.println(name + " meditates.");
+//                int meditate = hungry ? 0 : 5;
                 Thread.sleep(5);
                 System.out.printf("%-15s %s %n", name, "gets hungry.");
                 eat();
@@ -97,7 +104,7 @@ public class Philosopher extends Thread {
                     mealsLeft = 3;
                 } else if (banned == true) {
                     System.out.printf("%-90s %s %n", name, "banned.");
-                    Thread.sleep(5000);
+                    Thread.sleep(10);
                     banned = false;
                 }
             }
