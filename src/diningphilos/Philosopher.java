@@ -8,19 +8,29 @@
 package diningphilos;
 
 /**
+ * Philosoph Thread-Klasse.
+ *
+ * Ein Philosoph ist eine Thread-Unterklasse mit Name, zugehörigem Tisch und
+ * den booleschen Zuständen großer Hunger und ist verbannt. Er zählt bis drei
+ * Speisen. In wiederholender Reihenfolge meditiert, isst und ggf. schläft er.
+ * Gestartet und beendet wird ein Philosoph von der Hauptklasse. Er kann
+ * versuchen, sich auf einen Platz zu setzen und eine der beiden dazugehörigen
+ * Gabeln sowie danach die andere aufzunehmen. Die Philosophen kennen sich
+ * untereinander nicht und können nach dem Instanziieren auch nur eigene
+ * Attribute schreiben. Sonst keine anderer Philosophen und von keinem anderen
+ * Objekt der Umgebung.
  *
  * @author T500
  */
 public class Philosopher extends Thread {
 
-    String name;
-    Table table;
-    int meals;
-    boolean banned;
-    boolean hungry;
+    private final String name;
+    private final Table table;
+    private final boolean hungry;
+    private int meals;
+    private boolean banned;
 
-
-    public Philosopher(String name, Table table, boolean hungry) {
+    public Philosopher(final String name, final Table table, final boolean hungry) {
         this.name = name;
         this.table = table;
         this.hungry = hungry;
@@ -39,17 +49,17 @@ public class Philosopher extends Thread {
 
         // waiting for seat
         while (true) {
-            i %= (table.seats.length);
+            i %= table.seats.length;
             seat = table.seats[i];
 
-            if (seat.sit(this) == true) {
+            if (seat.sit(this)) {
                 break;
             }
             i++;
         }
 
-        int left = i;
-        int right = (i + 1) % table.seats.length;
+        final int left = i;
+        final int right = (i + 1) % table.seats.length;
 
         System.out.printf("%-45s %s %n", name, "needs forks.");
 
@@ -57,20 +67,17 @@ public class Philosopher extends Thread {
         while (true) {
 
             // left or right first
-            boolean decision = (Math.random() < 0.5);
+            final boolean decision = Math.random() < 0.5;
             first = decision ? table.forks[left] : table.forks[right];
             second = decision ? table.forks[right] : table.forks[left];
 
-            if (first.pick(this) == true) {
-                if (second.pick(this) == true) {
+            if (first.pick(this)) {
+                if (second.pick(this)) {
                     break;
                 } else {
                     first.drop();
                 }
             }
-
-            // no famous deadlock
-            Thread.sleep(1000);
         }
 
         System.out.printf("%-60s %s %d.%n", name, "eats at", i);
@@ -82,6 +89,7 @@ public class Philosopher extends Thread {
         meals++;
     }
 
+    @Override
     public void run() {
 
         int mealsLeft = 3;
@@ -102,15 +110,27 @@ public class Philosopher extends Thread {
                     System.out.printf("%-90s %s %n", name, "sleeps.");
                     Thread.sleep(10);
                     mealsLeft = 3;
-                } else if (banned == true) {
+                } else if (banned) {
                     System.out.printf("%-90s %s %n", name, "banned.");
                     Thread.sleep(10);
                     banned = false;
                 }
             }
         } catch (InterruptedException ex) {
-            System.out.println(name + " starves to death. :(");
+            System.out.println(name + " starves to death.");
         }
+    }
+
+    public String getPhilName() {
+        return name;
+    }
+
+    public int getMeals() {
+        return meals;
+    }
+
+    public void ban() {
+        banned = true;
     }
 }
 
