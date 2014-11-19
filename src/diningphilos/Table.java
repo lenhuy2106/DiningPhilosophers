@@ -16,8 +16,7 @@ import java.util.Scanner;
  * Ein Tisch ist eine Klasse und erstellt für sich die gleiche Anzahl an
  * Sitzen und Gabeln. Er kennt auch ihre Reihenfolge, greift aber sonst
  * nicht mehr auf sie zu.
- *
- * @author T500
+ * @author Nhu-Huy Le, Mathias Long Yan
  */
 public class Table {
 

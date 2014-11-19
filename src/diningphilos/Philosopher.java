@@ -19,8 +19,7 @@ package diningphilos;
  * untereinander nicht und können nach dem Instanziieren auch nur eigene
  * Attribute schreiben. Sonst keine anderer Philosophen und von keinem anderen
  * Objekt der Umgebung.
- *
- * @author T500
+ * @author Nhu-Huy Le, Mathias Long Yan
  */
 public class Philosopher extends Thread {
 

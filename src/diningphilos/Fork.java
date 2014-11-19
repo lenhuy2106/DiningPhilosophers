@@ -14,7 +14,7 @@ package diningphilos;
  * zwei zugehörigen, nebeneinander liegenden Plätzen sitzt, aufgenommen
  * werden. Dieser kennt die Gabel und setzt ggf. den booleschen Zustand
  * aufgenommen. Danach kann er von diesem wieder abgelegt werden.
- * @author T500
+ * @author Nhu-Huy Le, Mathias Long Yan
  */
 class Fork {
 

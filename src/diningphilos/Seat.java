@@ -14,7 +14,7 @@ package diningphilos;
  * besetzt, wenn noch keiner auf dem Platz sitzt, und falls er besetzt ist,
  * von demjenigen verlassen werden. Diese Methoden müssen atomar und
  * synchronisiert sein.
- * @author T500
+ * @author Nhu-Huy Le, Mathias Long Yan
  */
 class Seat {
 

@@ -15,6 +15,7 @@ package diningphilos;
  * Übersteigt diese eine bestimmte Zahl, wird der entsprechende Philosoph
  * für eine bestimmte Dauer vom Esstisch gesperrt. Der Master wird von
  * der Main Klasse initiiert und terminiert.
+ * @author Nhu-Huy Le, Mathias Long Yan
  */
 class Master extends Thread {
 
