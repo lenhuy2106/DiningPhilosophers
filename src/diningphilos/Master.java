@@ -1,5 +1,6 @@
 /*
  * (C) Nhu-Huy Le, nle@hm.edu
+ * (C) Mathias Long Yan, myan@hm.edu
  * Oracle Corporation Java 1.8.0
  * Microsoft Windows 7 Professional
  * 6.1.7601 Service Pack 1 Build 7601
@@ -8,17 +9,29 @@
 package diningphilos;
 
 /**
- *
- * @author T500
+ * Ein Master ist eine Thread-Unterklasse, die alle Philosophen zu
+ * einem Tisch kennt. Er berechnet fortlaufend die größte Differenz
+ * der jeweiligen Speisensummen. Diese kann er ausschließlich lesen.
+ * Übersteigt diese eine bestimmte Zahl, wird der entsprechende Philosoph
+ * für eine bestimmte Dauer vom Esstisch gesperrt. Der Master wird von
+ * der Main Klasse initiiert und terminiert.
  */
 class Master extends Thread {
 
+    /** Array of all philosophers. */
     private final Philosopher[] philosophers;
 
+    /**
+     * Ctor.
+     * @param nPhilosophers Number of philosophers.
+     */
     public Master(final int nPhilosophers) {
         philosophers = new Philosopher[nPhilosophers];
     }
 
+    /**
+     * Start thread.
+     */
     public void run() {
 
         while (!isInterrupted()) {
@@ -51,6 +64,10 @@ class Master extends Thread {
         System.out.println("master leaves room.");
     }
 
+    /**
+     * Getter.
+     * @return Philosophers array.
+     */
     public Philosopher[] getPhilosophers() {
         return philosophers;
     }

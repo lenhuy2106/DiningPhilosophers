@@ -1,5 +1,6 @@
 /*
  * (C) Nhu-Huy Le, nle@hm.edu
+ * (C) Mathias Long Yan, myan@hm.edu
  * Oracle Corporation Java 1.8.0
  * Microsoft Windows 7 Professional
  * 6.1.7601 Service Pack 1 Build 7601
@@ -17,9 +18,16 @@ package diningphilos;
  */
 class Fork {
 
+    /** Current holder of fork. */
     private Philosopher holder;
+    /** Free or not free. */
     private boolean free = true;
 
+    /**
+     * Picks fork.
+     * @param examiner Philosopher trying to pick.
+     * @return Success or no success.
+     */
     public synchronized boolean pick(Philosopher examiner) {
         boolean success = false;
 
@@ -31,6 +39,9 @@ class Fork {
         return success;
     }
 
+    /**
+     * Drops fork.
+     */
     public synchronized void drop() {
         holder = null;
         free = true;

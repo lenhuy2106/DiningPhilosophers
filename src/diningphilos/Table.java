@@ -1,5 +1,6 @@
 /*
  * (C) Nhu-Huy Le, nle@hm.edu
+ * (C) Mathias Long Yan, myan@hm.edu
  * Oracle Corporation Java 1.8.0
  * Microsoft Windows 7 Professional
  * 6.1.7601 Service Pack 1 Build 7601
@@ -23,6 +24,10 @@ public class Table {
     private final Seat[] seats;
     private final Fork[] forks;
 
+    /**
+     * Ctor
+     * @param nSeats Seats number.
+     */
     public Table(final int nSeats) {
 
         seats = new Seat[nSeats];
@@ -34,10 +39,18 @@ public class Table {
         }
     }
 
+    /**
+     * Getter
+     * @return Array of seats.
+     */
     public Seat[] getSeats() {
         return seats;
     }
 
+    /**
+     * Getter
+     * @return Array of forks.
+     */
     public Fork[] getForks() {
         return forks;
     }

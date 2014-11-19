@@ -1,5 +1,6 @@
 /*
  * (C) Nhu-Huy Le, nle@hm.edu
+ * (C) Mathias Long Yan, myan@hm.edu
  * Oracle Corporation Java 1.8.0
  * Microsoft Windows 7 Professional
  * 6.1.7601 Service Pack 1 Build 7601
@@ -23,12 +24,23 @@ package diningphilos;
  */
 public class Philosopher extends Thread {
 
+    /** Name of the philosopher. */
     private final String name;
+    /** Table of the Philosopher. */
     private final Table table;
+    /** Hungry or not. */
     private final boolean hungry;
+    /** Meal counter. */
     private int meals;
+    /** Currently banned or not. */
     private boolean banned;
 
+    /**
+     * Ctor.
+     * @param name Name of the philosopher.
+     * @param table Table of the Philosopher.
+     * @param hungry Hungry or not.
+     */
     public Philosopher(final String name, final Table table, final boolean hungry) {
         this.name = name;
         this.table = table;
@@ -37,6 +49,10 @@ public class Philosopher extends Thread {
         banned = false;
     }
 
+    /**
+     * Going to eat.
+     * @throws InterruptedException
+     */
     public void eat() throws InterruptedException {
 
         int i = 0;
@@ -88,6 +104,9 @@ public class Philosopher extends Thread {
         meals++;
     }
 
+    /**
+     * Starts thread.
+     */
     @Override
     public void run() {
 
@@ -120,14 +139,25 @@ public class Philosopher extends Thread {
         }
     }
 
+    /**
+     * Getter.
+     * @return Name.
+     */
     public String getPhilName() {
         return name;
     }
 
+    /**
+     * Getter
+     * @return meals sum.
+     */
     public int getMeals() {
         return meals;
     }
 
+    /**
+     * Ban this philosopher.
+     */
     public void ban() {
         banned = true;
     }

@@ -1,5 +1,6 @@
 /*
  * (C) Nhu-Huy Le, nle@hm.edu
+ * (C) Mathias Long Yan, myan@hm.edu
  * Oracle Corporation Java 1.8.0
  * Microsoft Windows 7 Professional
  * 6.1.7601 Service Pack 1 Build 7601
@@ -17,9 +18,16 @@ package diningphilos;
  */
 class Seat {
 
+    /** Current holder of seat. */
     private Philosopher holder;
+    /** Free or not free. */
     private boolean free = true;
 
+    /**
+     * Sit on the seat.
+     * @param examiner Philosopher trying to sit.
+     * @return Success or no success.
+     */
     public synchronized boolean sit(Philosopher examiner) {
         boolean success = false;
 
@@ -31,6 +39,9 @@ class Seat {
         return success;
     }
 
+    /**
+     * Leave the seat.
+     */
     public synchronized void leave() {
         holder = null;
         free = true;
