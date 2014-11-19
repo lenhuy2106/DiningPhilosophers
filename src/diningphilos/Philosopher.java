@@ -9,7 +9,6 @@ package diningphilos;
 
 /**
  * Philosoph Thread-Klasse.
- *
  * Ein Philosoph ist eine Thread-Unterklasse mit Name, zugehörigem Tisch und
  * den booleschen Zuständen großer Hunger und ist verbannt. Er zählt bis drei
  * Speisen. In wiederholender Reihenfolge meditiert, isst und ggf. schläft er.
@@ -49,8 +48,8 @@ public class Philosopher extends Thread {
 
         // waiting for seat
         while (true) {
-            i %= table.seats.length;
-            seat = table.seats[i];
+            i %= table.getSeats().length;
+            seat = table.getSeats()[i];
 
             if (seat.sit(this)) {
                 break;
@@ -59,7 +58,7 @@ public class Philosopher extends Thread {
         }
 
         final int left = i;
-        final int right = (i + 1) % table.seats.length;
+        final int right = (i + 1) % table.getSeats().length;
 
         System.out.printf("%-45s %s %n", name, "needs forks.");
 
@@ -68,8 +67,8 @@ public class Philosopher extends Thread {
 
             // left or right first
             final boolean decision = Math.random() < 0.5;
-            first = decision ? table.forks[left] : table.forks[right];
-            second = decision ? table.forks[right] : table.forks[left];
+            first = decision ? table.getForks()[left] : table.getForks()[right];
+            second = decision ? table.getForks()[right] : table.getForks()[left];
 
             if (first.pick(this)) {
                 if (second.pick(this)) {
@@ -112,7 +111,7 @@ public class Philosopher extends Thread {
                     mealsLeft = 3;
                 } else if (banned) {
                     System.out.printf("%-90s %s %n", name, "banned.");
-                    Thread.sleep(10);
+                    Thread.sleep(5);
                     banned = false;
                 }
             }

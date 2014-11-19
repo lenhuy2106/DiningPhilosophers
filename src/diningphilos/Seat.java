@@ -8,12 +8,17 @@
 package diningphilos;
 
 /**
- *
+ *Ein Platz ist eine gemeinsam genutzte Klasse.
+ * Er weiß, ob er besetzt ist und wer auf ihm sitzt. Er kann von Philosophen
+ * besetzt, wenn noch keiner auf dem Platz sitzt, und falls er besetzt ist,
+ * von demjenigen verlassen werden. Diese Methoden müssen atomar und
+ * synchronisiert sein.
  * @author T500
  */
 class Seat {
-    Philosopher holder;
-    boolean free = true;
+
+    private Philosopher holder;
+    private boolean free = true;
 
     public synchronized boolean sit(Philosopher examiner) {
         boolean success = false;

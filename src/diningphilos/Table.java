@@ -8,59 +8,94 @@
 package diningphilos;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 /**
+ * Tisch Main Klasse.
+ * Ein Tisch ist eine Klasse und erstellt für sich die gleiche Anzahl an
+ * Sitzen und Gabeln. Er kennt auch ihre Reihenfolge, greift aber sonst
+ * nicht mehr auf sie zu.
  *
  * @author T500
  */
 public class Table {
 
-    Seat[] seats;
-    Fork[] forks;
-    Master master;
+    private final Seat[] seats;
+    private final Fork[] forks;
 
-    Table(int nSeats, int nPhilosophers, String... hungry) {
+    public Table(final int nSeats) {
 
         seats = new Seat[nSeats];
         forks = new Fork[nSeats];
-
-        // master feature
-        master = new Master(nPhilosophers);
-        master.start();
-        System.out.println("master enters room.");
 
         for (int i = 0; i < nSeats; i++) {
             seats[i] = new Seat();
             forks[i] = new Fork();
         }
+    }
+
+    public Seat[] getSeats() {
+        return seats;
+    }
+
+    public Fork[] getForks() {
+        return forks;
+    }
+
+    /**
+     * Die Main Methode liest eine Anzahl an Philosophen und Sitzen und
+     * erstellt entsprechend  einen Tisch und die Philosophen. Sie lässt
+     * die Threads für eine bestimmte Zeit laufen und unterbricht danach
+     * alle. Sie kann mit einem Raum verglichen werden, in der die Objekte
+     * existieren.
+     *
+     * @throws InterruptedException
+     */
+    public static void main(final String[]args) throws InterruptedException {
+
+        final Scanner in = new Scanner(System.in);
+
+        // read console input
+        System.out.println("Number Philosophers:");
+        final int nPhilosophers = in.nextInt();
+        System.out.println("Index of very hungry Philosophers (seperated by space):");
+        String hungryInput = "";
+
+        while (in.hasNext()) {
+            hungryInput = in.nextLine();
+            if (!hungryInput.isEmpty()) break;
+        }
+        final String[] hungry = hungryInput.split(" ");
+        System.out.println("Number Seats:");
+        final int nSeats = in.nextInt();
+
+        System.out.println("table opens.");
+        final Table table = new Table(nSeats);
+
+        // master feature
+        final Master master = new Master(nPhilosophers);
+        master.start();
+        System.out.println("master enters room.");
 
         for (int i = 0; i < nPhilosophers; i++) {
             if (Arrays.asList(hungry).contains(i+"")) {
-                master.philosophers[i] = new Philosopher("id " + i, this, true);
+                master.getPhilosophers()[i] = new Philosopher("id " + i, table, true);
                 System.out.println("id " + i + " stomach seems to growl faster.");
             } else {
-                master.philosophers[i] = new Philosopher("id " + i, this, false);
+                master.getPhilosophers()[i] = new Philosopher("id " + i, table, false);
             }
-            master.philosophers[i].start();
+            master.getPhilosophers()[i].start();
         }
-    }
 
-    public static void main(String[]args) throws InterruptedException {
-
-        int nPhilosophers = 5;
-        int nSeats = 5;
-        String[] hungry = {"0", "3"};
-
-        System.out.println("table opens.");
-        Table table = new Table(nSeats, nPhilosophers, hungry);
+        // run time
         Thread.sleep(60000);
 
         System.out.println("table closes.");
         // stop all
-        for (Philosopher cur : table.master.philosophers) {
+        for (final Philosopher cur : master.getPhilosophers()) {
             cur.interrupt();
         }
 
-        table.master.interrupt();
+        master.interrupt();
     }
 }

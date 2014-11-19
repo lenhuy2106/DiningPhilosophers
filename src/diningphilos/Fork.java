@@ -8,12 +8,17 @@
 package diningphilos;
 
 /**
- *
+ * Eine Gabel ist eine gemeinsam genutzte Klasse.
+ * Sie kann nur ausschließlich von einem Philosophen, der auf einer der
+ * zwei zugehörigen, nebeneinander liegenden Plätzen sitzt, aufgenommen
+ * werden. Dieser kennt die Gabel und setzt ggf. den booleschen Zustand
+ * aufgenommen. Danach kann er von diesem wieder abgelegt werden.
  * @author T500
  */
 class Fork {
-    Philosopher holder;
-    boolean free = true;
+
+    private Philosopher holder;
+    private boolean free = true;
 
     public synchronized boolean pick(Philosopher examiner) {
         boolean success = false;
