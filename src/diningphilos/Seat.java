@@ -22,6 +22,11 @@ class Seat {
     private Philosopher holder;
     /** Free or not free. */
     private boolean free = true;
+    private final Table table;
+
+    public Seat(final Table table) {
+        this.table = table;
+    }
 
     /**
      * Sit on the seat.
@@ -42,8 +47,9 @@ class Seat {
     /**
      * Leave the seat.
      */
-    public synchronized void leave() {
+    public void leave() {
         holder = null;
         free = true;
+        table.callAll();
     }
 }

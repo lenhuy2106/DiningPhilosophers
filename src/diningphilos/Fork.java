@@ -42,7 +42,7 @@ class Fork {
     /**
      * Drops fork.
      */
-    public synchronized void drop() {
+    public void drop() {
         holder = null;
         free = true;
     }

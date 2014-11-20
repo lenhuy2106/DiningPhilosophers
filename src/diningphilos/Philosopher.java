@@ -25,7 +25,7 @@ public class Philosopher extends Thread {
 
     /** Name of the philosopher. */
     private final String name;
-    /** Table of the Philosopher. */
+    /** Table of the philosopher. */
     private final Table table;
     /** Hungry or not. */
     private final boolean hungry;
@@ -33,6 +33,10 @@ public class Philosopher extends Thread {
     private int meals;
     /** Currently banned or not. */
     private boolean banned;
+
+    private volatile boolean wait;
+
+    private final int tableLength;
 
     /**
      * Ctor.
@@ -46,6 +50,32 @@ public class Philosopher extends Thread {
         this.hungry = hungry;
         meals = 0;
         banned = false;
+        wait = false;
+        tableLength = table.getSeats().length;
+    }
+
+    public void come() {
+        wait = false;
+    }
+
+    public int lookForSeat() {
+
+        int free = -1;
+        int cur = -1;
+        final boolean clockwise = Math.random() < 0.5;
+
+        for (int i = 0; i < tableLength; i++) {
+
+            cur = clockwise ? i : (tableLength-1)-i;
+
+            if (table.getSeats()[cur].sit(this)) {
+                wait = false;
+                free = cur;
+                break;
+            }
+        }
+
+        return free;
     }
 
     /**
@@ -55,25 +85,23 @@ public class Philosopher extends Thread {
     public void eat() throws InterruptedException {
 
         int i = 0;
-        Seat seat;
         Fork first;
         Fork second;
 
         System.out.printf("%-30s %s %n", name, "seaches seat.");
 
-        // waiting for seat
+        // waiting for a seat
         while (true) {
-            i %= table.getSeats().length;
-            seat = table.getSeats()[i];
-
-            if (seat.sit(this)) {
-                break;
+            if (!wait) {
+                i = lookForSeat();
+                if (i != -1) {
+                    break;
+                }
             }
-            i++;
         }
 
-        final int left = i;
-        final int right = (i + 1) % table.getSeats().length;
+        final int left = (i) % tableLength;
+        final int right = (i + 1) % tableLength;
 
         System.out.printf("%-45s %s %n", name, "needs forks.");
 
@@ -99,7 +127,7 @@ public class Philosopher extends Thread {
 
         second.drop();
         first.drop();
-        seat.leave();
+        table.getSeats()[i].leave();
         meals++;
     }
 
@@ -161,5 +189,3 @@ public class Philosopher extends Thread {
         banned = true;
     }
 }
-
-

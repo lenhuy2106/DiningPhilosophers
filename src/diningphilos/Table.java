@@ -22,19 +22,28 @@ public class Table {
 
     private final Seat[] seats;
     private final Fork[] forks;
+    private final Master master;
 
     /**
      * Ctor
+     * @param master
      * @param nSeats Seats number.
      */
-    public Table(final int nSeats) {
+    public Table(final Master master, final int nSeats) {
 
         seats = new Seat[nSeats];
         forks = new Fork[nSeats];
+        this.master = master;
 
         for (int i = 0; i < nSeats; i++) {
-            seats[i] = new Seat();
+            seats[i] = new Seat(this);
             forks[i] = new Fork();
+        }
+    }
+
+    public void callAll() {
+        for (Philosopher phil : master.getPhilosophers()) {
+            phil.come();
         }
     }
 
@@ -81,13 +90,13 @@ public class Table {
         System.out.println("Number Seats:");
         final int nSeats = in.nextInt();
 
-        System.out.println("table opens.");
-        final Table table = new Table(nSeats);
-
         // master feature
         final Master master = new Master(nPhilosophers);
         master.start();
         System.out.println("master enters room.");
+
+        System.out.println("table opens.");
+        final Table table = new Table(master, nSeats);
 
         for (int i = 0; i < nPhilosophers; i++) {
             if (Arrays.asList(hungry).contains(i+"")) {
@@ -96,7 +105,11 @@ public class Table {
             } else {
                 master.getPhilosophers()[i] = new Philosopher("id " + i, table, false);
             }
-            master.getPhilosophers()[i].start();
+        }
+
+        for (final Philosopher cur : master.getPhilosophers()) {
+            cur.setDaemon(true);
+            cur.start();
         }
 
         // run time
